@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Shopkart</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="model">Model</string>
+    <string name="min_price">Min. Price</string>
+    <string name="max_price">Max. Price</string>
+    <string name="search_product">Search Product</string>
 </resources>
