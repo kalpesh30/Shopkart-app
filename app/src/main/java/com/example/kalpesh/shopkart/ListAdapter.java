@@ -100,17 +100,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         final Button buy = dialog.findViewById(R.id.buy_btn);
         Button cancel = dialog.findViewById(R.id.cancel_btn) ;
 
-       /* buy.setOnClickListener(new View.OnClickListener() {
+       buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BUY_URL = BUY_URL + "model=" + holder.model.getText() + "&username=" + username.getText() + "&qty=" + quantity.getText() ;
-                Log.v("Buy url -> ",BUY_URL);*/
-                /*StringRequest request = new StringRequest(BUY_URL, new Response.Listener<String>() {
+                BUY_URL = BUY_URL + "model=" + holder.model.getText().toString() + "&username=" + username.getText().toString() + "&qty=" + quantity.getText().toString() ;
+                Log.v("Buy url -> ",BUY_URL);
+                StringRequest request = new StringRequest(BUY_URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                       *//* GsonBuilder builder = new GsonBuilder();
+                       /*GsonBuilder builder = new GsonBuilder();
                         Gson gson = builder.create();
-                        Sales sales = gson.fromJson()*//*
+                        //Sales sales = gson.fromJson();*/
                        Log.v("The buyers -> ",response);
                     }
                 }, new Response.ErrorListener() {
@@ -120,18 +120,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                     }
                 }) ;
 
-                RequestQueue queue = Volley.newRequestQueue(context);
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(request);
 
             }
         });
-*/
+
         cancel.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                dismiss(dialog);
             }
         });
+
+        dialog.show();
     }
 
     public void dismiss(Dialog dialog){
