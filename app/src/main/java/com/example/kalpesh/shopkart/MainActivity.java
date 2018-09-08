@@ -1,6 +1,7 @@
 package com.example.kalpesh.shopkart;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,8 +34,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.v("intent is ",getIntent().toString()) ;
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        Intent intent = getIntent();
+        if(getIntent() == null)
+        Log.v("Null is there ","null ");
         String fetchUrl = getUrl() ;
         StringRequest request = new StringRequest(fetchUrl, new Response.Listener<String>() {
             @Override
@@ -102,23 +106,24 @@ public class MainActivity extends AppCompatActivity {
     public String getUrl(){
         Intent intent = getIntent();
         String fetchURL = BASE_URL ;
-        if(intent !=null ){
+        String str = intent.getStringExtra("SearchIntent") ;
+        if(str == "Searc" ){
             Bundle searchDetails = intent.getExtras();
             String manufacturer = searchDetails.getString("Manufacturer") ;
             String model = searchDetails.getString("Model");
-            int min = searchDetails.getInt("Min") ;
-            int max = searchDetails.getInt("Max") ;
+            String min = searchDetails.getString("Min") ;
+            String max = searchDetails.getString("Max") ;
             fetchURL = fetchURL + "?" ;
             if(manufacturer != null)
                 fetchURL = fetchURL + "&manufacturer=" + manufacturer;
             if(model != null)
                 fetchURL = fetchURL + "&model=" + model;
-            if(min != -1)
+            if(Integer.parseInt(min) != -1 )
                 fetchURL = fetchURL + "&min-price=" + String.valueOf(min);
-            if(max != -1)
+            if(Integer.parseInt(max) != -1)
                 fetchURL = fetchURL + "&max-price=" + String.valueOf(min);
         }
-
+        Log.v("Fetch Url-->",fetchURL) ;
         return fetchURL;
 
     }
