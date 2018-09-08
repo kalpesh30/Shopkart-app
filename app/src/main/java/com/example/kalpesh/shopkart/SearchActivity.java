@@ -25,12 +25,13 @@ public class SearchActivity extends AppCompatActivity {
         min = findViewById(R.id.et_min) ;
         max = findViewById(R.id.et_max) ;
         button = findViewById(R.id.search_button) ;
-        final Intent intent = new Intent(this,MainActivity.class) ;
-        final Bundle bundle = new Bundle() ;
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(),MainActivity.class) ;
+                Bundle bundle = new Bundle() ;
                 bundle.putString("Manufacturer",manufacturer.getText().toString());
                 bundle.putString("Model",manufacturer.getText().toString());
                 bundle.putString("MinPrice",min.getText().toString());

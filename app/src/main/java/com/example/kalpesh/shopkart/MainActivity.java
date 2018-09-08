@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(fetchUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.v("REs", response);
+                Log.v("Response", response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 ArrayList<Phone> phones = new ArrayList<>(Arrays.asList(gson.fromJson(response, Phone[].class)));
