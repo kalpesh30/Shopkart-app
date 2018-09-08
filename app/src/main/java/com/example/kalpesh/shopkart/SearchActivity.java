@@ -3,6 +3,7 @@ package com.example.kalpesh.shopkart;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -11,7 +12,8 @@ public class SearchActivity extends AppCompatActivity {
     private static EditText manufacturer;
     private static EditText model;
     private static EditText min;
-    private static  EditText max ;
+    private static EditText max ;
+    private static Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,10 @@ public class SearchActivity extends AppCompatActivity {
         Bundle bundle = new Bundle() ;
         bundle.putString("Manufacturer",manufacturer.getText().toString());
         bundle.putString("Model",manufacturer.getText().toString());
-        //bundle.putString("");
+        bundle.putInt("MinPrice",Integer.parseInt(min.getText().toString()));
+        bundle.putInt("MaxPrice",Integer.parseInt(max.getText().toString()));
+        intent.putExtras(bundle);
 
+        // startActivity(intent);
     }
 }

@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-        StringRequest request = new StringRequest(BASE_URL, new Response.Listener<String>() {
+        String fetchUrl = getUrl() ;
+        StringRequest request = new StringRequest(fetchUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.v("REs", response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
-                ArrayList<Phone> phones = new ArrayList<Phone>(Arrays.asList(gson.fromJson(response, Phone[].class)));
+                ArrayList<Phone> phones = new ArrayList<>(Arrays.asList(gson.fromJson(response, Phone[].class)));
                 renderPhone(phones);
             }
         }, new Response.ErrorListener() {
@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
         Intent intent = new Intent(Intent.ACTION_MAIN) ;
         intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags()
+        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK) ;
+        startActivity(intent);
     }
 
     @Override
@@ -95,6 +96,30 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+    }
+
+    public String getUrl(){
+        Intent intent = getIntent();
+        String fetchURL = BASE_URL ;
+        if(intent !=null ){
+            Bundle searchDetails = intent.getExtras();
+            String manufacturer = searchDetails.getString("Manufacturer") ;
+            String model = searchDetails.getString("Model");
+            int min = searchDetails.getInt("Min") ;
+            int max = searchDetails.getInt("Max") ;
+            fetchURL = fetchURL + "?" ;
+            if(manufacturer != null)
+                fetchURL = fetchURL + "&manufacturer=" + manufacturer;
+            if(model != null)
+                fetchURL = fetchURL + "&model=" + model;
+            if(min != -1)
+                fetchURL = fetchURL + "&min-price=" + String.valueOf(min);
+            if(max != -1)
+                fetchURL = fetchURL + "&max-price=" + String.valueOf(min);
+        }
+
+        return fetchURL;
 
     }
 
