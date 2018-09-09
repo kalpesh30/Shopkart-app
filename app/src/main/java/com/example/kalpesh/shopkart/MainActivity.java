@@ -106,9 +106,8 @@ public class MainActivity extends AppCompatActivity {
     public String getUrl(){
         Intent intent = getIntent();
         String fetchURL = BASE_URL ;
-        String str = intent.getStringExtra("SearchIntent") ;
-        if(str == "Searc" ){
-            Bundle searchDetails = intent.getExtras();
+        Bundle searchDetails = intent.getExtras();
+        if(searchDetails != null ){
             String manufacturer = searchDetails.getString("Manufacturer") ;
             String model = searchDetails.getString("Model");
             String min = searchDetails.getString("Min") ;
@@ -118,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 fetchURL = fetchURL + "&manufacturer=" + manufacturer;
             if(model != null)
                 fetchURL = fetchURL + "&model=" + model;
-            if(Integer.parseInt(min) != -1 )
-                fetchURL = fetchURL + "&min-price=" + String.valueOf(min);
-            if(Integer.parseInt(max) != -1)
-                fetchURL = fetchURL + "&max-price=" + String.valueOf(min);
+            if(min != null)
+                fetchURL = fetchURL + "&min-price=" + min ;
+            if(max != null)
+                fetchURL = fetchURL + "&max-price=" + max;
         }
         Log.v("Fetch Url-->",fetchURL) ;
         return fetchURL;
