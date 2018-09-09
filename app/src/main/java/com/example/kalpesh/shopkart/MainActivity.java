@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.op_search:
                 searchActivity();
                 break;
+
+            case R.id.op_sales:
+                salesActivity();
+                break;
             default:
         }
         return true;
@@ -91,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchActivity() {
         Intent intent = new Intent(this,SearchActivity.class);
+        startActivity(intent);
+    }
+
+    public void salesActivity() {
+        Intent intent = new Intent(this,SalesActivity.class);
         startActivity(intent);
     }
 

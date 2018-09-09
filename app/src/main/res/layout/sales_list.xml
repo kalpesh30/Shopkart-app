@@ -3,37 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp"
-    android:padding="5dp">
+    android:layout_margin="5dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="15sp">
 
         <TextView
             android:id="@+id/tv_inv_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Invoice Number : BI207" />
+            tools:text="Invoice Number : BI207"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tv_model"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Model : Redme Note 5" />
+            tools:text="Model : Redme Note 5"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tv_qty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Quantity : 2" />
+            tools:text="Quantity : 2"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tv_usrname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Username : Sparkle0i" />
+            tools:text="Username : Sparkle0i"
+            android:textSize="16sp"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

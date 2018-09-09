@@ -7,5 +7,9 @@
         android:orderInCategory="150"
         android:icon="@drawable/search_icon"
         app:showAsAction="always" />
-        <!--android:icon=""-->
+    <item
+        android:id="@+id/op_sales"
+        android:title="Sales Details"
+        android:orderInCategory="151"
+        app:showAsAction="collapseActionView" />
 </menu>
