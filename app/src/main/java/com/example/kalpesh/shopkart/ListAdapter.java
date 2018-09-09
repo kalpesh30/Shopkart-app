@@ -1,8 +1,10 @@
 package com.example.kalpesh.shopkart;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,10 +37,14 @@ import javax.xml.transform.Templates;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
+    private static EditText username;
+    private static EditText quantity;
+   // private static  Button buy,cancel;
+
     public static String BUY_URL= "https://bitnami-39xfosdmxa.appspot.com/buy?" ;
     Context context;
     ArrayList<Phone> phones;
-    Dialog dialog;
+    //Dialog dialog;
 
     ListAdapter(Context context,ArrayList<Phone> phones){
         this.context = context ;
@@ -65,7 +72,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         listViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDialog(listViewHolder);
+                setDialog(listViewHolder.itemView);
             }
         });
     }
@@ -88,56 +95,64 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         }
     }
 
-    public void setDialog(final ListViewHolder holder){
-        dialog = new Dialog(context) ;
-        dialog.setContentView(R.layout.buy_dialog);
-        dialog.setTitle("Buying Dialog");
+    public void setDialog(View view){
+            final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext()) ;
+            alert.setTitle("Buying items");
+            alert.setView(dialogLayout());
+            alert.setCancelable(false) ;
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(context,"buying Cancelled",Toast.LENGTH_SHORT).show();
+                }
+            }) ;
 
+            alert.setPositiveButton("Buy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String uname = username.getText().toString();
+                    String qty = quantity.getText().toString();
+                    Toast.makeText(context,"User " + uname + " Quantity : " + qty,Toast.LENGTH_LONG).show();
+                }
+            }) ;
+            AlertDialog dialog = alert.create() ;
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT) ;
+            dialog.show();
+    }
 
-        // Setting the dialogbox elements
-        final EditText username = dialog.findViewById (R.id.usrname) ;
-        final EditText quantity = dialog.findViewById(R.id.quantity) ;
-        final Button buy = dialog.findViewById(R.id.buy_btn);
-        Button cancel = dialog.findViewById(R.id.cancel_btn) ;
-
-       buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BUY_URL = BUY_URL + "model=" + holder.model.getText().toString() + "&username=" + username.getText().toString() + "&qty=" + quantity.getText().toString() ;
-                Log.v("Buy url -> ",BUY_URL);
-                StringRequest request = new StringRequest(BUY_URL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                       /*GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
-                        //Sales sales = gson.fromJson();*/
-                       Log.v("The buyers -> ",response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context,"Couldn't get JSON from the server",Toast.LENGTH_SHORT).show();
-                    }
-                }) ;
-
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                queue.add(request);
-
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-               dismiss(dialog);
-            }
-        });
-
-        dialog.show();
+    public View dialogLayout(){
+        LayoutInflater inflater = LayoutInflater.from(context) ;
+        View alertLayout = inflater.inflate(R.layout.buy_dialog,null);
+        username = alertLayout.findViewById(R.id.usrname) ;
+        quantity = alertLayout.findViewById(R.id.quantity) ;
+        return  alertLayout;
     }
 
     public void dismiss(Dialog dialog){
         dialog.dismiss();
+    }
+
+
+    public void getSalesResponse(ListViewHolder holder){
+        BUY_URL = BUY_URL + "model=" + holder.model.getText().toString() + "&username=" + username.getText().toString() + "&qty=" + quantity.getText().toString() ;
+        Log.v("Buy url -> ",BUY_URL);
+        StringRequest request = new StringRequest(BUY_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                       /*GsonBuilder builder = new GsonBuilder();
+                        Gson gson = builder.create();
+                        //Sales sales = gson.fromJson();*/
+                Log.v("The buyers -> ",response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Couldn't get JSON from the server",Toast.LENGTH_SHORT).show();
+            }
+        }) ;
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
 }
