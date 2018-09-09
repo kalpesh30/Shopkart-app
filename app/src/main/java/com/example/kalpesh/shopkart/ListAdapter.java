@@ -60,7 +60,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ListViewHolder listViewHolder, int i) {
+    public void onBindViewHolder(@NonNull ListViewHolder listViewHolder, int i) {
         Phone P = phones.get(i) ;
         listViewHolder.model.setText(P.getModel());
         listViewHolder.manufacturer.setText(P.getManufacturer());
@@ -69,12 +69,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                 .load(P.getImage())
                 .apply(new RequestOptions().override(160,250))
                 .into(listViewHolder.phone) ;
-        listViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        ListViewHolder holder = (ListViewHolder) listViewHolder;
+        /*listViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setDialog(listViewHolder.itemView);
             }
-        });
+        });*/
     }
 
     @Override
@@ -82,7 +83,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         return phones.size();
     }
 
-    public class ListViewHolder extends RecyclerView.ViewHolder {
+    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView phone;
         TextView model,manufacturer,price;
 
@@ -92,11 +93,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             model = itemView.findViewById(R.id.tv_model) ;
             manufacturer = itemView.findViewById(R.id.tv_manufaturer) ;
             price = itemView.findViewById(R.id.tv_price) ;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View itemView) {
+            setDialog(this);
         }
     }
 
-    public void setDialog(View view){
-            final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext()) ;
+    public void setDialog(final ListViewHolder holder){
+            AlertDialog.Builder alert = new AlertDialog.Builder(holder.itemView.getContext()) ;
             alert.setTitle("Buying items");
             alert.setView(dialogLayout());
             alert.setCancelable(false) ;
@@ -113,10 +120,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                     String uname = username.getText().toString();
                     String qty = quantity.getText().toString();
                     Toast.makeText(context,"User " + uname + " Quantity : " + qty,Toast.LENGTH_LONG).show();
+                    getSalesResponse(holder);
                 }
             }) ;
             AlertDialog dialog = alert.create() ;
-            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT) ;
             dialog.show();
     }
 
@@ -139,9 +146,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         StringRequest request = new StringRequest(BUY_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                       /*GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
-                        //Sales sales = gson.fromJson();*/
                 Log.v("The buyers -> ",response);
             }
         }, new Response.ErrorListener() {
