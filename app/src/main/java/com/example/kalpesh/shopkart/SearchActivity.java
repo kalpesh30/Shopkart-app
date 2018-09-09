@@ -34,9 +34,9 @@ public class SearchActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle() ;
                 bundle.putString("Manufacturer",manufacturer.getText().toString());
                 bundle.putString("Model",model.getText().toString());
-                bundle.putString("MinPrice",min.getText().toString());
-                bundle.putString("MaxPrice",max.getText().toString());
-                intent.putExtra("SearchIntent","Searc");
+                bundle.putString("Min",min.getText().toString());
+                bundle.putString("Max",max.getText().toString());
+                //intent.putExtra("SearchIntent","Searc");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
